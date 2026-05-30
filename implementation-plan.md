@@ -48,7 +48,7 @@
 
 ---
 
-## Milestone 0 — Project Scaffolding & Environment Isolation
+## Milestone 0 — Project Scaffolding & Environment Isolation ✅ COMPLETE
 
 ### Core Objective
 Stand up a reproducible Python project structure with dependency isolation, environment-variable-driven configuration, and a running FastAPI dev server that returns a health check.
@@ -134,6 +134,16 @@ ee-vlsi-platform/
 
 - **Flat vs. Layered structure**: The `api → services → repositories` layering is deliberate. Routes should *never* import SQLAlchemy sessions directly. If you skip this discipline now, you'll pay for it when writing tests (you can't mock what isn't abstracted).
 - **CORS early**: Configure `allow_origins` from your env config immediately. When the React frontend connects later, a missing CORS header will produce a cryptic browser error that looks like a network failure, not a CORS issue.
+
+---
+
+### 🔍 M0 Review Findings — Fix Before Starting M1
+
+These are minor issues found during review. Address them before moving on:
+
+- [X] **Move health endpoint into the v1 router**: Currently the health route is defined directly on `app` in `main.py` (line 37). It should live in `app/api/v1/router.py` using an `APIRouter`, and `main.py` should `include_router(api_v1_router, prefix=settings.API_V1_PREFIX)`. The commented-out line 31 in `main.py` shows you intended this — finish wiring it.
+- [X] **Broaden `.gitignore`**: Currently only ignores `app/__pycache__/`, but `__pycache__/` dirs will appear in `app/db/`, `app/api/v1/`, `app/core/`, etc. Change to `**/__pycache__/`. Also add `.venv/` — it's currently unignored and could accidentally get committed.
+- [X] **Fix `env_file` path in `config.py`**: `env_file="../.env"` is relative to the working directory, not the file location. When you run `uvicorn app.main:app` from the project root, the `.env` is at `./.env`, not `../.env`. Change to `env_file=".env"`. This will break in Docker if not fixed now.
 
 ---
 
