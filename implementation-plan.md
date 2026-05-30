@@ -116,7 +116,7 @@ ee-vlsi-platform/
   - Registers CORS middleware
 - [X] Create a single `GET /api/v1/health` endpoint returning `{"status": "operational", "version": "0.1.0"}`
 - [X] Create `.env.example` and add `.env` to `.gitignore` immediately
-- [ ] Initialize git repo with an initial commit
+- [X] Initialize git repo with an initial commit
 
 ### Testing & Verification
 1. Run `uvicorn app.main:app --reload`
