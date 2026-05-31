@@ -3,17 +3,22 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import Settings
 from app.api.v1.router import api_router
-
+from app.db.engine import engine
+from app.core.firebase import initialize_firebase
 
 settings = Settings()
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
     print("Application starting up...")
+    print("Starting Database engine")
+    print("Initializing firebase")
+    initialize_firebase()
     # Startup
     yield
     # Shutdown
     print("Application shutting down...")
+    await engine.dispose()
 
 
 def create_app() ->FastAPI:

@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     DEBUG: bool=True
     API_V1_PREFIX: str="/api/v1"
     CORS_ORIGIN: list[str] = ["*"]  # TODO: Add production origins
+    DATABASE_URL: str="postgresql+asyncpg://user:password@localhost:5432/dbname"
+    FIREBASE_SERVICE_ACCOUNT_PATH: str="./firebase-sa.json"
+    FIREBASE_PROJECT_ID: str="your-project-id"
+    FIREBASE_STORAGE_BUCKET: str="your-project-id.appspot.com"
     
     
 if __name__ == '__main__':
