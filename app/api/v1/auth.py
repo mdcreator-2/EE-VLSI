@@ -18,7 +18,7 @@ async def register_user(
     token_payload: TokenPayload = Depends(verify_firebase_token),
     db: AsyncSession = Depends(get_db_session)
 ):
-    existing_user = await auth_repo.get_by_firestore_id(db, token_payload.uid)
+    existing_user = await auth_repo.get_by_firebase_uid(db, token_payload.uid)
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists")
     else:

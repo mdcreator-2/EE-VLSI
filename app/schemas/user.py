@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
-from app.db.models.user import RoleEnum,ApprovalStatusEnum
+from app.core.rbac import Role
+from app.db.models.user import ApprovalStatusEnum
 from typing import Optional
 from uuid import UUID
 
@@ -16,13 +17,13 @@ class UserUpdate(Userbase):
     pass
 
 class AdminUserUpdate(Userbase):
-    role:Optional[RoleEnum]
-    approval_status:Optional[ApprovalStatusEnum]
+    role:Optional[Role] = None
+    approval_status:Optional[ApprovalStatusEnum] = None
 
 class UserResponse(Userbase):
     id:UUID
     email:str
-    role:RoleEnum
+    role:Role
     profile_photo_url:Optional[str]
     github_url:Optional[str]
     linkedin_url:Optional[str]
@@ -30,5 +31,3 @@ class UserResponse(Userbase):
     created_at:datetime
     updated_at:datetime
     model_config = {"from_attributes":True}
-
-    

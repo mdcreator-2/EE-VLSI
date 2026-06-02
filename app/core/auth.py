@@ -19,8 +19,8 @@ def verify_firebase_token(credentials: HTTPAuthorizationCredentials=Depends(secu
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = f"Authorization Failed: {str(e)}",headers={"WWW-Authenticate": "Bearer"})
 
-async def get_current_user(token_payload:dict = Depends(verify_firebase_token),db: AsyncSession = Depends(get_db_session)):
-    uid = token_payload.get("uid")
+async def get_current_user(token_payload: TokenPayload = Depends(verify_firebase_token),db: AsyncSession = Depends(get_db_session)):
+    uid = token_payload.uid
     stmt = select(User).where(User.firebase_uid==uid)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()

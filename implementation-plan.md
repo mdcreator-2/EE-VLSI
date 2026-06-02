@@ -382,7 +382,9 @@ Since you don't have a React frontend, you need to **generate a valid Firebase I
 
 ---
 
-## Milestone 3 — RBAC Enforcement Layer
+## Milestone 3 — RBAC Enforcement Layer ✅ COMPLETE
+
+> **M3 Review**: RoleChecker callable class with `__call__` + `Depends`, claims management via Admin SDK, admin endpoints (pending users, set role, approve), all wired into router. Consolidated `RoleEnum` (string) + `Role` (int) into a single `Role` IntEnum stored as INTEGER in PostgreSQL. Migration required manual fix (ENUM→INTEGER cast doesn't auto-convert).
 
 ### Core Objective
 Build a flexible, reusable role-gating system using Firebase Custom Claims and FastAPI dependencies. By the end, you should be able to lock any route to `STUDENT`, `CR`, or `ADMIN` with a one-liner.
