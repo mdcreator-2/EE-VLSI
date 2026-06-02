@@ -275,7 +275,16 @@ Stand up a PostgreSQL database in Docker, configure SQLAlchemy 2.0 async engine 
 
 ---
 
-## Milestone 2 — Authentication Middleware & Token Verification
+## Milestone 2 — Authentication Middleware & Token Verification ✅ COMPLETE
+
+> **M2 Review**: Auth dependency chain working — `verify_firebase_token` → `get_current_user`. User ORM model with PostgreSQL ENUMs, registration flow, `/me` endpoint, migration applied. Firebase Admin SDK properly used for token verification. See review findings below.
+
+> [!WARNING]
+> **Issues to fix:**
+> 1. **`firestore_uid` naming**: The parameter in `auth_repository.py` line 11 is named `firestore_uid` — but you're not using Firestore anymore. It should be `firebase_uid` to match your column name. A small typo but it'll confuse future-you.
+> 2. **Double commit**: In `api/v1/auth.py` line 29, you call `await db.commit()` manually, but your `get_db_session` dependency ALSO commits after the route handler returns. This means you're committing twice. Remove the manual `db.commit()` from the route — the dependency handles it. The `db.refresh(user)` on line 30 is also unnecessary if `expire_on_commit=False` is set (which it is in your engine.py).
+> 3. **Missing `back_populates` on Batch model**: `User` has `batch: relationship("Batch", back_populates="users")` but `Batch` model doesn't have a `users` relationship. Add `users: Mapped[list["User"]] = relationship(back_populates="batch")` to Batch, or remove `back_populates` from User.
+> 4. **`TokenPayload` schema is defined but not used as a type**: In `auth.py` route, you type-hint `token_payload: TokenPayload = Depends(verify_firebase_token)`, but `verify_firebase_token` returns a raw dict (the decoded Firebase token), not a `TokenPayload` instance. This works at runtime because Python doesn't enforce type hints, but it's semantically misleading. Either construct a `TokenPayload` inside `verify_firebase_token`, or type-hint the parameter as `dict`.
 
 ### Core Objective
 Build a reusable FastAPI dependency that intercepts the `Authorization: Bearer <JWT>` header, cryptographically verifies the Firebase ID token, and injects the decoded user identity into the request context. After this milestone, you should be able to protect any route with a single `Depends()` call.
@@ -299,7 +308,7 @@ Build a reusable FastAPI dependency that intercepts the `Authorization: Bearer <
 - [ ] `app/schemas/user.py` — User domain schemas:
   - `UserCreate`: Input schema for registration
   - `UserResponse`: Public-facing user data (exclude internal fields)
-- [ ] `app/db/models/user.py` — SQLAlchemy ORM model:
+- [x] `app/db/models/user.py` — SQLAlchemy ORM model:
   ```python
   # Conceptual shape
   class User(Base):
