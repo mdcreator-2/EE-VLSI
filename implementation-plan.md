@@ -486,7 +486,7 @@ Build the complete user lifecycle: registration, profile management, directory l
   - `get_pending_users(session)` — Filter by `approval_status = 'PENDING'`
   - `update(session, user_id, data)` — Partial update[How do i parse data for PostgreSql]
   - `count_by_batch(session, batch_id)` — For pagination metadata
-- [ ] `app/services/user_service.py`:
+- [X] `app/services/user_service.py`:
   - Orchestrates registration: validate roll number uniqueness → create row → set initial Firebase claims
   - Orchestrates approval: update status → set custom claims if needed
   - Orchestrates profile update: validate ownership → update row
@@ -552,7 +552,7 @@ Build the announcements CRUD with RBAC-gated creation (CR + Admin only), batch-s
 ### System Design Checklist
 
 #### Files to Create/Modify
-- [ ] `app/db/models/announcement.py`:
+- [X] `app/db/models/announcement.py`:
   ```python
   # Conceptual shape
   class Announcement(Base):
@@ -568,20 +568,20 @@ Build the announcements CRUD with RBAC-gated creation (CR + Admin only), batch-s
       author: Mapped["User"] = relationship(...)
       batch: Mapped[Optional["Batch"]] = relationship(...)
   ```
-- [ ] Generate migration: `alembic revision --autogenerate -m "create_announcements_table"`
-- [ ] `app/repositories/announcement_repository.py`:
+- [X] Generate migration: `alembic revision --autogenerate -m "create_announcements_table"`
+- [X] `app/repositories/announcement_repository.py`:
   - `create(session, data)` — Insert new row
   - `get_by_id(session, announcement_id)` — Single announcement with author joined
   - `get_feed(session, batch_id, limit, offset)` — **The key query**: batch-specific + global, sorted by `created_at DESC`
   - `delete(session, announcement_id)` — Admin only
   - `count_feed(session, batch_id)` — For pagination
-- [ ] `app/services/announcement_service.py`:
+- [X] `app/services/announcement_service.py`:
   - Create: Validate author has CR/Admin role → persist to PostgreSQL → (placeholder for async dispatch)
   - Feed: Single query using SQL `OR`
-- [ ] `app/schemas/announcement.py`:
+- [X] `app/schemas/announcement.py`:
   - `AnnouncementCreate`: `title`, `content`, `batch_id` (optional — null = global)
   - `AnnouncementResponse`: Full response with embedded author info
-- [ ] `app/api/v1/announcements.py`:
+- [X] `app/api/v1/announcements.py`:
   - `POST /api/v1/announcements` — CR/Admin only
   - `GET /api/v1/announcements?batch_id=1&page=1&per_page=20` — Feed endpoint
   - `GET /api/v1/announcements/{id}` — Single announcement
