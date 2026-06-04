@@ -467,7 +467,9 @@ Build a flexible, reusable role-gating system using Firebase Custom Claims and F
 
 ---
 
-## Milestone 4 — User Management & Student Directory
+## Milestone 4 — User Management & Student Directory ✅ COMPLETE
+
+> **M4 Review**: First full vertical slice through all layers. Service layer introduced (UserService with register, get_profile, update_profile, get_directory, search_users). Repository consolidated (auth_repository merged into user_repository). Paginated directory with batch filtering and name search via ILIKE. Profile updates with ownership check (requester_id == user_id). Route ordering fixed (static paths before dynamic /{user_id}). UserUpdate schema properly separated with all-optional fields. Auth route refactored to use service layer.
 
 ### Core Objective
 Build the complete user lifecycle: registration, profile management, directory listing with filtering, and the admin approval queue. This is the first full vertical slice through all layers (route → service → repository → PostgreSQL).
@@ -475,25 +477,25 @@ Build the complete user lifecycle: registration, profile management, directory l
 ### System Design Checklist
 
 #### Files to Create/Modify
-- [ ] `app/repositories/user_repository.py`:
+- [X] `app/repositories/user_repository.py`:
   - `create(session, data)` — Insert new user row
   - `get_by_firebase_uid(session, firebase_uid)` — For auth dependency
   - `get_by_id(session, user_id)` — By PostgreSQL UUID
   - `get_by_roll_number(session, roll_number)` — For uniqueness validation
   - `get_users_by_batch(session, batch_id, limit, offset)` — Paginated directory query
   - `get_pending_users(session)` — Filter by `approval_status = 'PENDING'`
-  - `update(session, user_id, data)` — Partial update
+  - `update(session, user_id, data)` — Partial update[How do i parse data for PostgreSql]
   - `count_by_batch(session, batch_id)` — For pagination metadata
 - [ ] `app/services/user_service.py`:
   - Orchestrates registration: validate roll number uniqueness → create row → set initial Firebase claims
   - Orchestrates approval: update status → set custom claims if needed
   - Orchestrates profile update: validate ownership → update row
-- [ ] `app/schemas/user.py` — Expand with:
+- [X] `app/schemas/user.py` — Expand with:
   - `UserCreate`: `name`, `roll_number`, `batch_id`, `profile_photo_url` (optional)
   - `UserUpdate`: All fields optional (partial update pattern)
   - `UserResponse`: Public fields only (no `approval_status` for non-admins)
   - `UserListResponse`: Paginated wrapper with `items`, `total`, `page`, `per_page`
-- [ ] `app/api/v1/users.py` — User endpoints:
+- [X] `app/api/v1/users.py` — User endpoints:
   - `GET /api/v1/users/directory` — Paginated, filterable by `batch_id`
   - `GET /api/v1/users/{user_id}` — Single user profile
   - `PATCH /api/v1/users/{user_id}` — Update own profile

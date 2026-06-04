@@ -1,5 +1,6 @@
 from fastapi import HTTPException, Depends, status
 from app.core.auth import verify_firebase_token
+from app.schemas.auth import TokenPayload
 from enum import IntEnum
 
 class Role(IntEnum):
@@ -11,8 +12,8 @@ class RoleChecker:
     def __init__(self, minimum_role: Role):
         self.minimum_role = minimum_role
 
-    def __call__(self, token_payload=Depends(verify_firebase_token)):
-        user_level = token_payload.get("role") if isinstance(token_payload, dict) else getattr(token_payload, "role", None)
+    def __call__(self, token_payload:TokenPayload = Depends(verify_firebase_token)):
+        user_level = token_payload.role if isinstance(token_payload, TokenPayload) else getattr(token_payload, "role", None)
         if user_level is None:
             user_level = Role.STUDENT.value
             
