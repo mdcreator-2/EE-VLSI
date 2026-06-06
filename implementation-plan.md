@@ -639,7 +639,7 @@ Build the academic resource lifecycle: intent validation, direct-to-Storage uplo
 ### System Design Checklist
 
 #### Files to Create/Modify
-- [ ] `app/db/models/resource.py`:
+- [X] `app/db/models/resource.py`:
   ```python
   # Conceptual shape
   class VaultResource(Base):
@@ -657,8 +657,8 @@ Build the academic resource lifecycle: intent validation, direct-to-Storage uplo
       uploader: Mapped["User"] = relationship(...)
       batch: Mapped["Batch"] = relationship(...)
   ```
-- [ ] Generate migration: `alembic revision --autogenerate -m "create_vault_resources_table"`
-- [ ] `app/repositories/resource_repository.py`:
+- [X] Generate migration: `alembic revision --autogenerate -m "create_vault_resources_table"`
+- [X] `app/repositories/resource_repository.py`:
   - `create(session, data)` — With `approval_status = PENDING`
   - `get_approved(session, batch_id, semester, subject, material_type, limit, offset)` — Multi-filter catalogue query
   - `get_pending(session)` — Admin approval queue
@@ -671,7 +671,10 @@ Build the academic resource lifecycle: intent validation, direct-to-Storage uplo
   - **Register metadata**: After client upload, verify object exists in Storage, then insert PostgreSQL row
   - **Approve/Reject**: Admin workflow — update `approval_status`
   - **Delete**: Delete PostgreSQL row + Cloud Storage object
-- [ ] `app/schemas/resource.py`:
+- [X] `app/schemas/resource.py`:  
+        ```python  
+          #what  is ResourceIntentRequest and ResouceIntentResponse???
+        ```
   - `ResourceIntentRequest`: `file_name`, `file_size_bytes`, `content_type`
   - `ResourceIntentResponse`: `upload_url`, `upload_path`, `expires_at`
   - `ResourceRegister`: `upload_path`, `semester`, `subject`, `material_type`, `batch_id`
