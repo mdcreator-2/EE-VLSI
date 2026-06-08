@@ -665,7 +665,7 @@ Build the academic resource lifecycle: intent validation, direct-to-Storage uplo
   - `get_by_id(session, resource_id)`
   - `update_status(session, resource_id, status)`
   - `delete(session, resource_id)`
-- [ ] `app/services/resource_service.py`:
+- [X] `app/services/resource_service.py`:
   - **Validate intent**: Check file extension against allowlist, enforce size limit
   - **Generate signed upload URL**: Use `google-cloud-storage` library to generate a V4 signed URL for direct client upload
   - **Register metadata**: After client upload, verify object exists in Storage, then insert PostgreSQL row

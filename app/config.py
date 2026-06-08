@@ -12,7 +12,12 @@ class Settings(BaseSettings):
     FIREBASE_SERVICE_ACCOUNT_PATH: str="./firebase-sa.json"
     FIREBASE_PROJECT_ID: str="your-project-id"
     FIREBASE_STORAGE_BUCKET: str="your-project-id.appspot.com"
-    
+    S3_ENDPOINT_URL: str
+    S3_ACCESS_KEY: str
+    S3_SECRET_KEY: str
+    BUCKET_NAME: str
+    ALLOWED_EXTENSIONS: list[str] = ["pdf", "png", "jpg", "jpeg"]
+    MAX_SIZE_BYTES: int = 200*1024*1024 
     
 if __name__ == '__main__':
     s = Settings()

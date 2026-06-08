@@ -17,14 +17,15 @@ class ResourceRepository:
             subject=resource_in.subject,
             material_type=resource_in.material_type,
             file_url=resource_in.file_url,
-            approval_status=approval_status
+            approval_status=approval_status,
+            uploader_id=uploader_id
         )
         session.add(resource)
         try:
             await session.flush()
         except IntegrityError:
             raise
-        return
+        return resource
     
     async def get_pending(self, session:AsyncSession, limit:int, offset:int) -> List[VaultResource]:
         stmt = select(VaultResource).where(VaultResource.approval_status == ApprovalStatusEnum.PENDING).limit(limit).offset(offset)

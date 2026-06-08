@@ -38,3 +38,14 @@ class ResourceListResponse(BaseModel):
     total: int
     page: int
     per_page: int
+
+class ResourceIntentRequest(BaseModel):
+    file_name: str 
+    file_size_bytes: int 
+    content_type: str  
+
+class ResourceIntentResponse(BaseModel):
+    upload_url: str      
+    upload_path: str     
+    expires_at: datetime 
+
