@@ -631,7 +631,9 @@ Build the announcements CRUD with RBAC-gated creation (CR + Admin only), batch-s
 
 ---
 
-## Milestone 6 — The Vault: Resource Management & Cloud Storage
+## Milestone 6 — The Vault: Resource Management & Cloud Storage ✅ COMPLETE
+
+> **M6 Review**: S3-compatible presigned URL upload flow with intent validation (extension + size check), metadata registration with file existence verification, multi-filter catalogue query (batch, semester, subject ilike, material_type - all composable), admin approval/reject endpoints, delete with S3 cascade (DB first, log S3 failure). Migration applied for vault_resources table with MaterialTypeEnum and shared ApprovalStatusEnum.
 
 ### Core Objective
 Build the academic resource lifecycle: intent validation, direct-to-Storage upload (client-side), metadata registration in PostgreSQL, admin approval queue, and browseable catalogue with filtering by batch/semester/subject/material type.

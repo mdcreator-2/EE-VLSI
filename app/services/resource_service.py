@@ -1,15 +1,12 @@
 from app.repositories.resource_repository import ResourceRepository
-from app.core.rbac import Role
 from app.db.models.resource import MaterialTypeEnum
 from app.db.models.user import ApprovalStatusEnum
-from typing import List, Optional
+from typing import Optional
 import boto3
 import uuid
 from datetime import datetime, timedelta
 from app.config import Settings
-from app.schemas.resource import ResourceIntentRequest, ResourceIntentResponse,ResourceRegister,ResourceResponse
-from app.db.models.resource import VaultResource,MaterialTypeEnum
-from app.db.models.user import ApprovalStatusEnum
+from app.schemas.resource import ResourceIntentRequest, ResourceIntentResponse, ResourceRegister
 
 settings = Settings()
 
@@ -23,10 +20,10 @@ class ResourceService:
             aws_secret_access_key=settings.S3_SECRET_KEY
         )
     
-    async def get_upload_intent(self,request:ResourceIntentRequest) -> ResourceIntentResponse:
+    async def get_upload_intent(self, request: ResourceIntentRequest) -> ResourceIntentResponse:
         ext = request.file_name.split('.')[-1].lower()
         if ext not in settings.ALLOWED_EXTENSIONS:
-            raise ValueError(f"File extension {ext} not allowed")
+            raise ValueError(f"File extension '{ext}' not allowed")
         
         if request.file_size_bytes > settings.MAX_SIZE_BYTES:
             raise ValueError("File size exceeds the limit")
@@ -47,40 +44,64 @@ class ResourceService:
         return ResourceIntentResponse(
             upload_url=presigned_url,
             upload_path=upload_path,
-            expires_at=datetime.now() + timedelta(seconds=300)
+            expires_at=datetime.now() + timedelta(seconds=900)
         )
 
-    
-    async def register_resource(self,session,request:ResourceRegister,user_id:UUID) -> VaultResource:
+    async def register_resource(self, session, request: ResourceRegister, user_id: uuid.UUID):
         try:
             self.s3_client.head_object(
                 Bucket=settings.BUCKET_NAME,
-                Key=request.upload_path
+                Key=request.file_url
             )
-        except self.s3_client.exceptions.ClientError as e:
+        except self.s3_client.exceptions.ClientError:
             raise ValueError("File not found in the upload path")
 
-        result = await self.resource_repo.create(session,request,user_id, ApprovalStatusEnum.PENDING)
+        result = await self.resource_repo.create(session, request, user_id, ApprovalStatusEnum.PENDING)
         return result
     
-    async def delete_resource(self,session,user_id:UUID,resource_id:UUID) -> bool:
-        resource = await self.resource_repo.get_by_id(session,resource_id)
+    async def list_resources(self, session, batch_id: Optional[int] = None, semester: Optional[int] = None, subject: Optional[str] = None, material_type: Optional[MaterialTypeEnum] = None, page: int = 1, per_page: int = 20):
+        offset = (page - 1) * per_page
+        resources = await self.resource_repo.get_approved(session, batch_id, semester, subject, material_type, limit=per_page, offset=offset)
+        count = await self.resource_repo.count_approved(session, batch_id, semester, subject, material_type)
+        return {"items": resources, "total": count, "page": page, "per_page": per_page}
+
+    async def list_pending_resources(self, session, page: int = 1, per_page: int = 20):
+        offset = (page - 1) * per_page
+        resources = await self.resource_repo.get_pending(session, limit=per_page, offset=offset)
+        count = await self.resource_repo.count_pending(session)
+        return {"items": resources, "total": count, "page": page, "per_page": per_page}
+
+    async def get_resource(self, session, resource_id: uuid.UUID):
+        resource = await self.resource_repo.get_by_id(session, resource_id)
+        if not resource:
+            raise ValueError("Resource not found")
+        return resource
+
+    async def update_status(self, session, resource_id: uuid.UUID, status: ApprovalStatusEnum):
+        resource = await self.resource_repo.get_by_id(session, resource_id)
+        if not resource:
+            raise ValueError("Resource not found")
+        result = await self.resource_repo.update_status(session, resource_id, status)
+        return result
+
+    async def delete_resource(self, session, user_id: uuid.UUID, resource_id: uuid.UUID):
+        resource = await self.resource_repo.get_by_id(session, resource_id)
         if not resource:
             raise ValueError("Resource not found")
         if resource.uploader_id != user_id:
-            raise ValueError("You are not authorized to delete this resource")
+            raise PermissionError("You are not authorized to delete this resource")
         
-        result = await self.resource_repo.delete(session,resource_id)
+        # Delete from DB first
+        await self.resource_repo.delete(session, resource_id)
 
-        return result
-
-    async def list_resources(self,db,limit:int=10,offset:int=0):
+        # Then delete from S3 (log failure, don't crash)
         try:
-            result = await self.resource_repo.get_approved(db, limit, offset)
+            self.s3_client.delete_object(
+                Bucket=settings.BUCKET_NAME,
+                Key=resource.file_url
+            )
         except Exception as e:
-            raise ValueError(str(e))
-        return result
+            # Log this - orphan blob in S3 but DB row is already gone
+            print(f"WARNING: Failed to delete S3 object {resource.file_url}: {e}")
 
-        
-
-        
+        return True
