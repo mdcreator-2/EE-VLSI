@@ -790,7 +790,7 @@ Build the event/timeline data model with event-media relationships, supporting c
 ### System Design Checklist
 
 #### Files to Create/Modify
-- [ ] `app/db/models/event.py`:
+- [X] `app/db/models/event.py`:
   ```python
   # Conceptual shape
   class Event(Base):
@@ -814,7 +814,7 @@ Build the event/timeline data model with event-media relationships, supporting c
       # Relationships
       event: Mapped["Event"] = relationship(back_populates="media")
   ```
-- [ ] Generate migration: `alembic revision --autogenerate -m "create_events_and_media_tables"`
+- [X] Generate migration: `alembic revision --autogenerate -m "create_events_and_media_tables"`
 - [ ] `app/repositories/event_repository.py`:
   - `create_event(session, data)` — CR/Admin only
   - `get_events_by_batch(session, batch_id, limit, offset)` — Sorted by `event_date DESC`, includes media count
