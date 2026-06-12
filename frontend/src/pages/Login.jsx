@@ -45,7 +45,7 @@ const Login = () => {
           />
 
           {/* Login Form */}
-          <form className="flex flex-col items-center">
+          <form className="flex flex-col items-center mb-8">
             <h2 className="mb-8 text-center text-3xl font-bold text-white">
               Log In
             </h2>
