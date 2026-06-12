@@ -5,6 +5,7 @@ import "./index.css";
 
 import Login from "./pages/Login";
 import Hero from "./pages/Hero";
+import SignUp from "./pages/SignUp";
 
 
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Hero />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );
