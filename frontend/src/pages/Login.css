@@ -1,0 +1,30 @@
+@media screen and (max-width: 970px) {
+  .bottt {
+    flex-direction: column;
+
+  justify-content: center;
+  gap: 10px;
+    align-items: center;
+  }
+.meee {
+    height: 50vh;
+}
+.mc{
+  overflow-y: scroll;
+
+}
+}
+
+@media screen and (max-width: 500px) {
+    .kutti {
+        width: 330px;
+        padding: 15px;
+        padding-top: 27px;
+     
+    }
+.meee {
+    height: 40vh;
+}
+}
+
+
