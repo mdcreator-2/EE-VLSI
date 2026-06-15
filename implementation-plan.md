@@ -815,20 +815,20 @@ Build the event/timeline data model with event-media relationships, supporting c
       event: Mapped["Event"] = relationship(back_populates="media")
   ```
 - [X] Generate migration: `alembic revision --autogenerate -m "create_events_and_media_tables"`
-- [ ] `app/repositories/event_repository.py`:
+- [X] `app/repositories/event_repository.py`:
   - `create_event(session, data)` — CR/Admin only
   - `get_events_by_batch(session, batch_id, limit, offset)` — Sorted by `event_date DESC`, includes media count
   - `get_event_with_media(session, event_id)` — Single event with all media eagerly loaded
   - `update_event(session, event_id, data)`
   - `delete_event(session, event_id)` — **CASCADE handles media rows automatically**
-- [ ] `app/repositories/event_media_repository.py`:
+- [X] `app/repositories/event_media_repository.py`:
   - `add_media(session, event_id, media_data)`
   - `get_media_by_event(session, event_id)`
   - `delete_media(session, media_id)` — Also delete Storage object
 - [ ] `app/services/event_service.py`:
   - Event CRUD orchestration
   - Media management with Storage cleanup on delete
-- [ ] `app/schemas/event.py`:
+- [X] `app/schemas/event.py`:
   - `EventCreate`: `title`, `description`, `event_date`, `batch_id` (optional)
   - `EventResponse`: Event data + `media_count` (avoid loading all URLs in list views)
   - `EventDetailResponse`: Event data + full `media` array
