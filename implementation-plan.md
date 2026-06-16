@@ -825,7 +825,7 @@ Build the event/timeline data model with event-media relationships, supporting c
   - `add_media(session, event_id, media_data)`
   - `get_media_by_event(session, event_id)`
   - `delete_media(session, media_id)` — Also delete Storage object
-- [ ] `app/services/event_service.py`:
+- [X] `app/services/event_service.py`:
   - Event CRUD orchestration
   - Media management with Storage cleanup on delete
 - [X] `app/schemas/event.py`:
@@ -834,7 +834,7 @@ Build the event/timeline data model with event-media relationships, supporting c
   - `EventDetailResponse`: Event data + full `media` array
   - `MediaCreate`: `media_url`, `media_type`
   - `MediaResponse`: Full media metadata
-- [ ] `app/api/v1/events.py`:
+- [X] `app/api/v1/events.py`:
   - `POST /api/v1/events` — CR/Admin
   - `GET /api/v1/events?batch_id=1` — Timeline listing with media count
   - `GET /api/v1/events/{id}` — Event detail with full media

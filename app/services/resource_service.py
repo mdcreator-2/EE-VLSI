@@ -90,11 +90,8 @@ class ResourceService:
             raise ValueError("Resource not found")
         if resource.uploader_id != user_id:
             raise PermissionError("You are not authorized to delete this resource")
-        
-        # Delete from DB first
         await self.resource_repo.delete(session, resource_id)
-
-        # Then delete from S3 (log failure, don't crash)
+        
         try:
             self.s3_client.delete_object(
                 Bucket=settings.BUCKET_NAME,

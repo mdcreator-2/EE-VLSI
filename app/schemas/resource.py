@@ -42,7 +42,7 @@ class ResourceListResponse(BaseModel):
 class ResourceIntentRequest(BaseModel):
     file_name: str 
     file_size_bytes: int 
-    content_type: str  
+    content_type: str
 
 class ResourceIntentResponse(BaseModel):
     upload_url: str      
