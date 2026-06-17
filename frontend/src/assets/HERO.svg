@@ -1,0 +1,39 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_111_8)">
+<rect width="1920" height="1080" fill="black"/>
+<g filter="url(#filter0_f_111_8)">
+<circle cx="992.5" cy="1127.5" r="587.5" fill="#FF0000"/>
+</g>
+<g style="mix-blend-mode:hue">
+<path d="M124.667 1014.95L-1.49992 808.449" stroke="#DADADA" stroke-opacity="0.4" stroke-width="1.2"/>
+<path d="M720 1010.43L124.826 11.1768" stroke="url(#paint0_linear_111_8)" stroke-opacity="0.4" stroke-width="1.2"/>
+<path d="M459.74 573.521L1.51159 573.521" stroke="#DADADA" stroke-opacity="0.4" stroke-width="1.2"/>
+<path d="M124.192 1024L124.192 -7.15256e-06" stroke="#DADADA" stroke-opacity="0.4" stroke-width="1.2"/>
+</g>
+<g style="mix-blend-mode:hue">
+<path d="M1309.33 1014.95L1435.5 808.449" stroke="#DADADA" stroke-opacity="0.4" stroke-width="1.2"/>
+<path d="M716 1010.43L1311.17 11.1768" stroke="url(#paint1_linear_111_8)" stroke-opacity="0.4" stroke-width="1.2"/>
+<path d="M975.26 573.521L1433.49 573.521" stroke="#DADADA" stroke-opacity="0.4" stroke-width="1.2"/>
+<path d="M1309.81 1024L1309.81 -7.15256e-06" stroke="#DADADA" stroke-opacity="0.4" stroke-width="1.2"/>
+</g>
+<circle opacity="0.1" cx="720" cy="943" r="161" fill="black"/>
+</g>
+<defs>
+<filter id="filter0_f_111_8" x="-145" y="-10" width="2275" height="2275" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="275" result="effect1_foregroundBlur_111_8"/>
+</filter>
+<linearGradient id="paint0_linear_111_8" x1="156.843" y1="11.1768" x2="1296.8" y2="682.536" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DADADA"/>
+<stop offset="1" stop-color="#DADADA" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_111_8" x1="1279.16" y1="11.1768" x2="139.195" y2="682.536" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DADADA"/>
+<stop offset="1" stop-color="#DADADA" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_111_8">
+<rect width="1920" height="1080" fill="white"/>
+</clipPath>
+</defs>
+</svg>
